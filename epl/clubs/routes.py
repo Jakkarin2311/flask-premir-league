@@ -1,4 +1,4 @@
-from flask import Blueprint, app, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from epl.models import Club
 from epl.extensions import db
 
@@ -6,9 +6,11 @@ clubs_bp = Blueprint('clubs', __name__, template_folder='templates')
 
 @clubs_bp.route('/')
 def index():
-    query = db.select(Club)
-    clubs = db.session.scalars(query).all()
-    return render_template('clubs/index.html', clubs=clubs, title='Clubs Page')
+  query = db.select(Club)
+  clubs = db.session.scalars(query).all()
+  return render_template('clubs/index.html', 
+                         title='Clubs Page', 
+                         clubs=clubs)
 
 @clubs_bp.route('/clubs/new', methods=['GET', 'POST'])
 def new_club():
@@ -23,7 +25,7 @@ def new_club():
     db.session.commit()
 
     flash('add new club successfully', 'success')
-    return redirect(url_for('all_clubs'))
+    return redirect(url_for('clubs.index'))
   
   return render_template('clubs/new_club.html',
                          title='New Club Page')
@@ -62,7 +64,7 @@ def update_club(id):
     db.session.commit()
 
     flash('update club successfully', 'success')
-    return redirect(url_for('all_clubs'))
+    return redirect(url_for('clubs.index'))
   
   return render_template('clubs/update_club.html',
                          title='Update Club Page',
