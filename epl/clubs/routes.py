@@ -62,7 +62,7 @@ def update_club(id):
     db.session.commit()
 
     flash('update club successfully', 'success')
-    return redirect(url_for('clubs.index'))
+    return redirect(url_for('all_clubs'))
   
   return render_template('clubs/update_club.html',
                          title='Update Club Page',

@@ -20,16 +20,27 @@ def new_player():
     goal = int(request.form['goals'])
     squad_no = int(request.form['squad_no'])
     img = request.form['img']
+
+    if request.method == 'POST':
+        position = request.form['position']
+        
+        clean_sheets = None
+        if position == 'Goalkeeper':
+            cs_value = request.form.get('clean_sheets')
+            clean_sheets = int(cs_value) if cs_value else 0
+
     club_id = int(request.form['club_id'])
 
-    player = Player(name=name, position=position, nationality=nationality,
-                    goal=goal, squad_no=squad_no, img=img, club_id=club_id)
-    
+    player = Player(
+        name=name, position=position, nationality=nationality,
+        goal=goal, squad_no=squad_no, img=img, club_id=club_id,
+        clean_sheets=clean_sheets
+    )
     db.session.add(player)
     db.session.commit()
 
     flash('add new player successfully', 'success')
-    return redirect(url_for('all_players'))
+    return redirect(url_for('players.index'))
   
   return render_template('players/new_player.html',
                          title='New Player Page',
@@ -62,6 +73,12 @@ def update_player(id):
     goal = int(request.form['goals'])
     squad_no = int(request.form['squad_no'])
     img = request.form['img']
+    clean_sheets = request.form.get('clean_sheets')
+    if clean_sheets:
+        clean_sheets = int(clean_sheets)
+    else:
+        clean_sheets = 0
+    
     club_id = int(request.form['club_id'])
 
     player.name = name
@@ -70,6 +87,7 @@ def update_player(id):
     player.goal = goal
     player.squad_no = squad_no
     player.img = img
+    player.clean_sheets = clean_sheets
     player.club_id = club_id
     
     db.session.add(player)

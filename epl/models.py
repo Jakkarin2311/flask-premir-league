@@ -27,6 +27,7 @@ class Player(db.Model):
     goal: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     squad_no: Mapped[int] = mapped_column(Integer, nullable=True)
     img: Mapped[str] = mapped_column(String(255), nullable=False)
+    clean_sheets: Mapped[int] = mapped_column(Integer, nullable=True)
     club_id: Mapped[int] = mapped_column(Integer, ForeignKey(Club.id))
 
     club: Mapped["Club"] = relationship("Club", back_populates="Players")
