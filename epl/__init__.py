@@ -13,7 +13,7 @@
 
 
 
-from flask import Flask
+from flask import Flask, app
 from epl.extensions import db, migrate
 from epl.core.routes import core_bp
 from epl.clubs.routes import clubs_bp
@@ -22,7 +22,7 @@ from epl.players.routes import players_bp
 def create_app():
     app = Flask(__name__)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/premier_league_db'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
     app.secret_key = b'rigiregeoeogoe123123!@#'
 
     db.init_app(app)
